@@ -1,0 +1,63 @@
+## Chromium 源码目录结构
+
+- android_webview：为了与Android framework进行对接，对content层的代码进行了封装。
+- apps: Chrome package apps的代码，这部分可以用不关心。
+- base：提供给所有子工程使用的通用代码，相当于是一个基础库的实现，比如字符串处理，智能指针等，只有当代吗需要共享给其他顶级工程时，才能添加到这里。
+- Breakpad:Google的一个用于处理程序崩溃的开源项目。
+- Build:所有工程共用的编译配置
+- cc：Chromium合成器的实现
+- Chrome：Chromium浏览器
+  - app
+    - **locales**
+    - **resources**
+    - **theme**
+  - browser
+  - **common**
+    - **net**
+  - **installer**
+  - **renderer**
+  - **third_party**
+  - **tools**
+    - **build**
+    - **memory**
+    - **perf/dashboard**
+    - **profiles**
+  - **test**
+    - **automation**
+    - **page_cycler**
+    - **reliability**
+    - **selenium**
+    - **startup**
+    - ui
+    - **unit**
+- components：给contents调用的一些组件模块
+- **content:content模块的实现，多进程沙盒浏览器的核心代码**
+  - browser:浏览器的后端处理所有与子进程相关的I/O与通信，与render进行通信并管理网页的绘制，运行在Browser进程中
+  - common:这部分代码被多个进程使用(例如browser进程和renderer进程，browser进程和plugin进程)，是chromium专用的
+  - gpu:GPU进程的代码，用来进行3D合成，还包括一些3D相关的API.
+  - plugin:在其他进程中运行浏览器插件的代码
+  - renderer:标签页渲染子进程的代码，它嵌入了webkit中并从浏览器进程获取I/O
+  - Worker:运行HTML5 Web Workers的代码
+  - utility:用于在沙盒进程中运行随机操作的代码。浏览器进程在想要对不受信任的数据运行操作时使用它。
+- devices：通用底层硬件API的跨平台实现。
+- Ipc:IPC通信模块
+- media：多媒体相关模块
+- net:为Chromium开发的一个网络库，在运行webkit下的test_shell时可以单独使用，可以参考chrome/common/net
+- out:编译生成的目录
+- sandbox:沙箱项目，用来防止被黑客攻击的渲染器修改系统。
+- skia:google为Android开发的图形库，直接从Android代码树中复制过来，在UI/grx之后增加了一些对skia进行封装的类。
+- sql:SQLite数据库方面的模块。
+- Testing:Google开源测试工具，用来进行单元测试。
+- third_party:一些第三方库，比如图片解码，压缩算法，在`chrome/third_party`中也有一些Chrome专用的库
+  - webkit:
+    - public:Blink对外提供的api层，在Chromium和webkit之间起到隔离作用，他把webkit里面的API重新封装，对象类型与webkit中的类型对应，命名方式为webXXX为前缀
+    - source：webkit引擎的源代码目录
+    - Tools：webkit项目使用的工具模块
+    - LayoutTests、ManualTests、PerformanceTests：各种各样的测试用例
+- ui/grx:共享图形库，这是渲染Chromium UI图形的基础.
+- Ui/views:进行UI开发的简单框架，提供了渲染、布局、事件处理机制。大部分的浏览器UI都基于这个框架来实现。这个目录包含了基本对象，还有一些浏览器特定的对象位于`chrome/browser/ui/view`
+- Url:google开源URL解析和标准化库。
+- V8：javascript v8的库
+
+![img](http://www.chromium.org/_/rsrc/1308680092356/developers/how-tos/getting-around-the-chrome-source-code/Content.png)
+
